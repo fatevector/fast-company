@@ -1,6 +1,7 @@
+import Bookmark from "./bookmark";
 import Quality from "./quality";
 
-const User = ({ user, onDeleteUser }) => {
+const User = ({ user, onDeleteUser, onToggleBookmark }) => {
     return (
         <tr>
             <td>{user.name}</td>
@@ -12,6 +13,12 @@ const User = ({ user, onDeleteUser }) => {
             <td>{user.profession.name}</td>
             <td>{user.completedMeetings}</td>
             <td>{user.rate}</td>
+            <td>
+                <Bookmark
+                    status={user.bookmark}
+                    onToggleBookmark={() => onToggleBookmark(user._id)}
+                />
+            </td>
             <td>
                 <button
                     type="button"
