@@ -1,80 +1,9 @@
-import React, { useState } from "react";
-import api from "../api";
 import "bootstrap/dist/css/bootstrap.css";
+import User from "./user";
 
-const Users = () => {
-    const [users, setUsers] = useState(api.users.fetchAll());
-    const renderPhrase = () => {
-        return (
-            <h2>
-                {users.length === 0 ? (
-                    <span className="badge bg-danger">
-                        Никто с тобой не тусанет
-                    </span>
-                ) : (
-                    <span className="badge bg-primary">
-                        {users.length}
-                        {users.length % 10 >= 2 &&
-                        users.length % 10 <= 4 &&
-                        Math.trunc(users.length / 10) !== 1
-                            ? " человекa тусанут "
-                            : " человек тусанет "}
-                        с тобой сегодня
-                    </span>
-                )}
-            </h2>
-        );
-    };
-    const renderQualities = (user) => {
-        return (
-            <>
-                {user.qualities.map((quality) => {
-                    return (
-                        <span
-                            className={`badge bg-${quality.color} m-1`}
-                            key={quality._id}
-                        >
-                            {quality.name}
-                        </span>
-                    );
-                })}
-            </>
-        );
-    };
-    const renderRows = () => {
-        return (
-            <>
-                {users.map((user) => {
-                    return (
-                        <tr key={user._id}>
-                            <td>{user.name}</td>
-                            <td>{renderQualities(user)}</td>
-                            <td>{user.profession.name}</td>
-                            <td>{user.completedMeetings}</td>
-                            <td>{user.rate}</td>
-                            <td>
-                                <button
-                                    type="button"
-                                    className="btn btn-danger"
-                                    onClick={() => handleDeleteUser(user._id)}
-                                >
-                                    delete
-                                </button>
-                            </td>
-                        </tr>
-                    );
-                })}
-            </>
-        );
-    };
-
-    const handleDeleteUser = (id) => {
-        setUsers(users.filter((user) => user._id !== id));
-    };
-
+const Users = ({ users, ...rest }) => {
     return (
         <>
-            {renderPhrase()}
             {users.length !== 0 && (
                 <table className="table table-hover">
                     <thead>
@@ -88,7 +17,11 @@ const Users = () => {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        {renderRows()}
+                        {users.map((user) => {
+                            return (
+                                <User key={user._id} user={user} {...rest} />
+                            );
+                        })}
                     </tbody>
                 </table>
             )}
