@@ -5,23 +5,23 @@ import "bootstrap/dist/css/bootstrap.css";
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll());
     const renderPhrase = () => {
-        return users.length === 0 ? (
+        return (
             <h2>
-                <span className="badge bg-danger">
-                    Никто с тобой не тусанет
-                </span>
-            </h2>
-        ) : (
-            <h2>
-                <span className="badge bg-primary">
-                    {users.length}
-                    {users.length % 10 >= 2 &&
-                    users.length % 10 <= 4 &&
-                    Math.trunc(users.length / 10) !== 1
-                        ? " человекa тусанут "
-                        : " человек тусанет "}
-                    с тобой сегодня
-                </span>
+                {users.length === 0 ? (
+                    <span className="badge bg-danger">
+                        Никто с тобой не тусанет
+                    </span>
+                ) : (
+                    <span className="badge bg-primary">
+                        {users.length}
+                        {users.length % 10 >= 2 &&
+                        users.length % 10 <= 4 &&
+                        Math.trunc(users.length / 10) !== 1
+                            ? " человекa тусанут "
+                            : " человек тусанет "}
+                        с тобой сегодня
+                    </span>
+                )}
             </h2>
         );
     };
@@ -32,7 +32,7 @@ const Users = () => {
                     return (
                         <span
                             className={`badge bg-${quality.color} m-1`}
-                            key={Math.random()}
+                            key={quality._id}
                         >
                             {quality.name}
                         </span>
@@ -46,7 +46,7 @@ const Users = () => {
             <>
                 {users.map((user) => {
                     return (
-                        <tr key={Math.random()}>
+                        <tr key={user._id}>
                             <td>{user.name}</td>
                             <td>{renderQualities(user)}</td>
                             <td>{user.profession.name}</td>
