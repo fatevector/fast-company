@@ -1,4 +1,5 @@
 import { useState } from "react";
+import paginate from "../utils/paginate";
 import Pagination from "./pagination";
 import User from "./user";
 
@@ -6,9 +7,13 @@ const Users = ({ users, ...rest }) => {
     const count = users.length;
     const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
+
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
+
+    const userSlice = paginate(users, currentPage, pageSize);
+
     return (
         <>
             {count > 0 && (
@@ -25,7 +30,7 @@ const Users = ({ users, ...rest }) => {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        {users.map((user) => {
+                        {userSlice.map((user) => {
                             return (
                                 <User key={user._id} user={user} {...rest} />
                             );
