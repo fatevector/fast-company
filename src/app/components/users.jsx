@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import PropTypes from "prop-types";
+import api from "../api";
 import paginate from "../utils/paginate";
 import Pagination from "./pagination";
 import User from "./user";
@@ -9,6 +10,11 @@ const Users = ({ users, ...rest }) => {
     const count = users.length;
     const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
+    const [proffessions] = useState(api.professions.fetchAll());
+
+    const handleProffessionSelect = (params) => {
+        console.log(params);
+    };
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
@@ -18,7 +24,10 @@ const Users = ({ users, ...rest }) => {
 
     return (
         <>
-            <GroupList />
+            <GroupList
+                items={proffessions}
+                onItemSelect={handleProffessionSelect}
+            />
             {count > 0 && (
                 <table className="table table-hover">
                     <thead>
