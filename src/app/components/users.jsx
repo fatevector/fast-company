@@ -5,20 +5,23 @@ import paginate from "../utils/paginate";
 import Pagination from "./pagination";
 import User from "./user";
 import GroupList from "./groupList";
+import SearchStatus from "./searchStatus";
 
 const Users = ({ users: allUsers, ...rest }) => {
-    const count = allUsers.length;
-    const pageSize = 4;
+    const pageSize = 2;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
+
     useEffect(() => {
         api.professions.fetchAll().then(data => setProfessions(data));
     }, []);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedProf]);
 
     const handleProffessionSelect = item => {
         setSelectedProf(item);
-        setCurrentPage(1);
     };
 
     const handlePageChange = pageIndex => {
@@ -28,6 +31,7 @@ const Users = ({ users: allUsers, ...rest }) => {
     const filteredUsers = selectedProf
         ? allUsers.filter(user => user.profession === selectedProf)
         : allUsers;
+    const count = filteredUsers.length;
     const userSlice = paginate(filteredUsers, currentPage, pageSize);
     const handleClearFilter = () => {
         setSelectedProf(undefined);
@@ -35,9 +39,9 @@ const Users = ({ users: allUsers, ...rest }) => {
     };
 
     return (
-        <>
+        <div className="d-flex">
             {professions && (
-                <>
+                <div className="d-flex flex-column flex-shink-0 p-3">
                     <GroupList
                         selectedItem={selectedProf}
                         items={professions}
@@ -49,37 +53,46 @@ const Users = ({ users: allUsers, ...rest }) => {
                     >
                         Очистить
                     </button>
-                </>
+                </div>
             )}
-            {count > 0 && (
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Имя</th>
-                            <th scope="col">Качества</th>
-                            <th scope="col">Профессия</th>
-                            <th scope="col">Встретился, раз</th>
-                            <th scope="col">Оценка</th>
-                            <th scope="col">Избранное</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="table-group-divider">
-                        {userSlice.map(user => {
-                            return (
-                                <User key={user._id} user={user} {...rest} />
-                            );
-                        })}
-                    </tbody>
-                </table>
-            )}
-            <Pagination
-                itemsCount={filteredUsers.length}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-            />
-        </>
+            <div className="d-flex flex-column">
+                <SearchStatus length={count} />
+                {count > 0 && (
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Качества</th>
+                                <th scope="col">Профессия</th>
+                                <th scope="col">Встретился, раз</th>
+                                <th scope="col">Оценка</th>
+                                <th scope="col">Избранное</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody className="table-group-divider">
+                            {userSlice.map(user => {
+                                return (
+                                    <User
+                                        key={user._id}
+                                        user={user}
+                                        {...rest}
+                                    />
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
+                <div className="d-flex justify-content-center">
+                    <Pagination
+                        itemsCount={filteredUsers.length}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
+            </div>
+        </div>
     );
 };
 
