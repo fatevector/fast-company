@@ -6,8 +6,8 @@ import Pagination from "./pagination";
 import User from "./user";
 import GroupList from "./groupList";
 
-const Users = ({ users, ...rest }) => {
-    const count = users.length;
+const Users = ({ users: allUsers, ...rest }) => {
+    const count = allUsers.length;
     const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -24,7 +24,10 @@ const Users = ({ users, ...rest }) => {
         setCurrentPage(pageIndex);
     };
 
-    const userSlice = paginate(users, currentPage, pageSize);
+    const filteredUsers = selectedProf
+        ? allUsers.filter(user => user.profession === selectedProf)
+        : allUsers;
+    const userSlice = paginate(filteredUsers, currentPage, pageSize);
 
     return (
         <>
