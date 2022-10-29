@@ -18,6 +18,7 @@ const Users = ({ users: allUsers, ...rest }) => {
 
     const handleProffessionSelect = item => {
         setSelectedProf(item);
+        setCurrentPage(1);
     };
 
     const handlePageChange = pageIndex => {
@@ -28,15 +29,27 @@ const Users = ({ users: allUsers, ...rest }) => {
         ? allUsers.filter(user => user.profession === selectedProf)
         : allUsers;
     const userSlice = paginate(filteredUsers, currentPage, pageSize);
+    const handleClearFilter = () => {
+        setSelectedProf(undefined);
+        setCurrentPage(1);
+    };
 
     return (
         <>
             {professions && (
-                <GroupList
-                    selectedItem={selectedProf}
-                    items={professions}
-                    onItemSelect={handleProffessionSelect}
-                />
+                <>
+                    <GroupList
+                        selectedItem={selectedProf}
+                        items={professions}
+                        onItemSelect={handleProffessionSelect}
+                    />
+                    <button
+                        className="btn btn-secondary mt-2"
+                        onClick={handleClearFilter}
+                    >
+                        Очистить
+                    </button>
+                </>
             )}
             {count > 0 && (
                 <table className="table table-hover">
@@ -61,7 +74,7 @@ const Users = ({ users: allUsers, ...rest }) => {
                 </table>
             )}
             <Pagination
-                itemsCount={count}
+                itemsCount={filteredUsers.length}
                 pageSize={pageSize}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
