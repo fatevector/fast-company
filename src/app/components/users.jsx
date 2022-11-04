@@ -28,6 +28,10 @@ const Users = ({ users: allUsers, ...rest }) => {
         setCurrentPage(pageIndex);
     };
 
+    const handleSort = item => {
+        console.log(item);
+    };
+
     const filteredUsers = selectedProf
         ? allUsers.filter(user => user.profession._id === selectedProf._id)
         : allUsers;
@@ -57,7 +61,13 @@ const Users = ({ users: allUsers, ...rest }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus length={count} />
-                {count > 0 && <UsersTable users={userSlice} {...rest} />}
+                {count > 0 && (
+                    <UsersTable
+                        users={userSlice}
+                        onSort={handleSort}
+                        {...rest}
+                    />
+                )}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={filteredUsers.length}
