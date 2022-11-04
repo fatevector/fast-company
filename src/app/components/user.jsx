@@ -1,3 +1,5 @@
+import React from "react";
+import PropTypes from "prop-types";
 import Bookmark from "./bookmark";
 import Quality from "./quality";
 
@@ -30,6 +32,12 @@ const User = ({ user, onDeleteUser, onToggleBookmark }) => {
             </td>
         </tr>
     );
+};
+
+User.propTypes = {
+    user: PropTypes.object.isRequired,
+    onDeleteUser: PropTypes.func.isRequired,
+    onToggleBookmark: PropTypes.func.isRequired
 };
 
 export default User;
