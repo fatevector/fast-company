@@ -6,12 +6,14 @@ import Pagination from "./pagination";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UsersTable from "./usersTable";
+import { orderBy } from "lodash";
 
 const Users = ({ users: allUsers, ...rest }) => {
-    const pageSize = 2;
+    const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
+    const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
 
     useEffect(() => {
         api.professions.fetchAll().then(data => setProfessions(data));
@@ -29,14 +31,22 @@ const Users = ({ users: allUsers, ...rest }) => {
     };
 
     const handleSort = item => {
-        console.log(item);
+        if (sortBy.iter === item) {
+            setSortBy(prevState => ({
+                ...prevState,
+                order: prevState.order === "asc" ? "desc" : "asc"
+            }));
+        } else {
+            setSortBy({ iter: item, order: "asc" });
+        }
     };
 
     const filteredUsers = selectedProf
         ? allUsers.filter(user => user.profession._id === selectedProf._id)
         : allUsers;
     const count = filteredUsers.length;
-    const userSlice = paginate(filteredUsers, currentPage, pageSize);
+    const sortedUsers = orderBy(filteredUsers, [sortBy.iter], [sortBy.order]);
+    const userSlice = paginate(sortedUsers, currentPage, pageSize);
     const handleClearFilter = () => {
         setSelectedProf(undefined);
         setCurrentPage(1);
