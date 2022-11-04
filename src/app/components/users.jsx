@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import api from "../api";
 import paginate from "../utils/paginate";
 import Pagination from "./pagination";
-import User from "./user";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
+import UsersTable from "./usersTable";
 
 const Users = ({ users: allUsers, ...rest }) => {
     const pageSize = 2;
@@ -57,32 +57,7 @@ const Users = ({ users: allUsers, ...rest }) => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus length={count} />
-                {count > 0 && (
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Имя</th>
-                                <th scope="col">Качества</th>
-                                <th scope="col">Профессия</th>
-                                <th scope="col">Встретился, раз</th>
-                                <th scope="col">Оценка</th>
-                                <th scope="col">Избранное</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody className="table-group-divider">
-                            {userSlice.map(user => {
-                                return (
-                                    <User
-                                        key={user._id}
-                                        user={user}
-                                        {...rest}
-                                    />
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                )}
+                {count > 0 && <UsersTable users={userSlice} {...rest} />}
                 <div className="d-flex justify-content-center">
                     <Pagination
                         itemsCount={filteredUsers.length}
