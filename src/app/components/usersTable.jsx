@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 import Bookmark from "./bookmark";
-// import Quality from "./quality";
+import QualitiesList from "./qualitiesList";
 
 const UsersTable = ({
     users,
@@ -20,7 +20,8 @@ const UsersTable = ({
             name: "Имя"
         },
         qualities: {
-            name: "Качества"
+            name: "Качества",
+            component: user => <QualitiesList qualities={user.qualities} />
         },
         professions: {
             path: "profession.name",
