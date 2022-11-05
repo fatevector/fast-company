@@ -1,31 +1,32 @@
 import React from "react";
-import User from "./user";
+// import User from "./user";
 import PropTypes from "prop-types";
 import TableHeader from "./tableHeader";
+import TableBody from "./tableBody";
 
 const UsersTable = ({ users, onSort, selectedSort, ...rest }) => {
     const columns = {
         name: {
-            iter: "name",
+            path: "name",
             name: "Имя"
         },
         qualities: {
             name: "Качества"
         },
         professions: {
-            iter: "profession.name",
+            path: "profession.name",
             name: "Профессия"
         },
         completedMeetings: {
-            iter: "completedMeetings",
+            path: "completedMeetings",
             name: "Встретился, раз"
         },
         rate: {
-            iter: "rate",
+            path: "rate",
             name: "Оценка"
         },
         bookmark: {
-            iter: "bookmark",
+            path: "bookmark",
             name: "Избранное"
         },
         delete: {}
@@ -33,11 +34,12 @@ const UsersTable = ({ users, onSort, selectedSort, ...rest }) => {
     return (
         <table className="table table-hover">
             <TableHeader {...{ onSort, selectedSort, columns }} />
-            <tbody className="table-group-divider">
+            <TableBody {...{ columns, items: users }} />
+            {/* <tbody className="table-group-divider">
                 {users.map(user => {
-                    return <User key={user._id} user={user} {...rest} />;
+                    return <User key={user._id} {...user} {...rest} />;
                 })}
-            </tbody>
+            </tbody> */}
         </table>
     );
 };
