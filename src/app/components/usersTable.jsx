@@ -1,10 +1,8 @@
 import React from "react";
-// import User from "./user";
 import PropTypes from "prop-types";
-import TableHeader from "./tableHeader";
-import TableBody from "./tableBody";
 import Bookmark from "./bookmark";
 import QualitiesList from "./qualitiesList";
+import Table from "./table";
 
 const UsersTable = ({
     users,
@@ -58,15 +56,12 @@ const UsersTable = ({
         }
     };
     return (
-        <table className="table table-hover">
-            <TableHeader {...{ onSort, selectedSort, columns }} />
-            <TableBody {...{ columns, items: users }} />
-            {/* <tbody className="table-group-divider">
-                {users.map(user => {
-                    return <User key={user._id} {...user} {...rest} />;
-                })}
-            </tbody> */}
-        </table>
+        <Table
+            onSort={onSort}
+            selectedSort={selectedSort}
+            columns={columns}
+            items={users}
+        ></Table>
     );
 };
 
