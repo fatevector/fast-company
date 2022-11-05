@@ -3,8 +3,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
+import Bookmark from "./bookmark";
+// import Quality from "./quality";
 
-const UsersTable = ({ users, onSort, selectedSort, ...rest }) => {
+const UsersTable = ({
+    users,
+    onSort,
+    selectedSort,
+    onToggleBookmark,
+    onDeleteUser,
+    ...rest
+}) => {
     const columns = {
         name: {
             path: "name",
@@ -27,9 +36,25 @@ const UsersTable = ({ users, onSort, selectedSort, ...rest }) => {
         },
         bookmark: {
             path: "bookmark",
-            name: "Избранное"
+            name: "Избранное",
+            component: user => (
+                <Bookmark
+                    status={user.bookmark}
+                    onToggleBookmark={() => onToggleBookmark(user._id)}
+                />
+            )
         },
-        delete: {}
+        delete: {
+            component: user => (
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => onDeleteUser(user._id)}
+                >
+                    delete
+                </button>
+            )
+        }
     };
     return (
         <table className="table table-hover">
@@ -47,7 +72,9 @@ const UsersTable = ({ users, onSort, selectedSort, ...rest }) => {
 UsersTable.propTypes = {
     users: PropTypes.array.isRequired,
     onSort: PropTypes.func.isRequired,
-    selectedSort: PropTypes.object.isRequired
+    selectedSort: PropTypes.object.isRequired,
+    onToggleBookmark: PropTypes.func.isRequired,
+    onDeleteUser: PropTypes.func.isRequired
 };
 
 export default UsersTable;

@@ -3,12 +3,23 @@ import PropTypes from "prop-types";
 import { get } from "lodash";
 
 const TableBody = ({ items, columns }) => {
+    const renderContent = (item, column) => {
+        if (columns[column].component) {
+            const component = columns[column].component;
+            if (typeof component === "function") {
+                return component(item);
+            }
+            return component;
+        }
+        return get(item, columns[column].path);
+    };
+
     return (
         <tbody>
             {items.map(item => (
                 <tr key={item._id}>
                     {Object.keys(columns).map(column => (
-                        <td key={column}>{get(item, columns[column].path)}</td>
+                        <td key={column}>{renderContent(item, column)}</td>
                     ))}
                 </tr>
             ))}
