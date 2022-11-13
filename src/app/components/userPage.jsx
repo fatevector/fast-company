@@ -1,13 +1,14 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import api from "../api";
 import QualitiesList from "./qualitiesList";
 
-const UserPage = id => {
+const UserPage = ({ id }) => {
     const [user, setUser] = useState();
     useEffect(() => {
-        api.users.getById(id).then(user => setUser(user));
+        api.users.getById(id).then(user => {
+            setUser(user);
+        });
     }, []);
     return user ? (
         <>
@@ -18,8 +19,12 @@ const UserPage = id => {
             <h2>Rate: {user.rate}</h2>
         </>
     ) : (
-        <h1>Loading...</h1>
+        <div>Loading...</div>
     );
+};
+
+UserPage.propTypes = {
+    id: PropTypes.string.isRequired
 };
 
 export default UserPage;
