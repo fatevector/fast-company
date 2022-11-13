@@ -1,13 +1,13 @@
 import { React, useState, useEffect } from "react";
 import api from "../api";
 import paginate from "../utils/paginate";
-import Pagination from "../components/pagination";
-import GroupList from "../components/groupList";
-import SearchStatus from "../components/searchStatus";
-import UsersTable from "../components/usersTable";
+import Pagination from "./pagination";
+import GroupList from "./groupList";
+import SearchStatus from "./searchStatus";
+import UsersTable from "./usersTable";
 import { orderBy } from "lodash";
 
-const Users = () => {
+const UsersList = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -108,4 +108,4 @@ const Users = () => {
     return "Loading...";
 };
 
-export default Users;
+export default UsersList;
