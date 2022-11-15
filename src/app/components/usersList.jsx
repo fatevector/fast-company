@@ -7,7 +7,7 @@ import SearchStatus from "./searchStatus";
 import UsersTable from "./usersTable";
 import { orderBy } from "lodash";
 
-const Users = () => {
+const UsersList = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -108,4 +108,4 @@ const Users = () => {
     return "Loading...";
 };
 
-export default Users;
+export default UsersList;
