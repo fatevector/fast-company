@@ -37,6 +37,8 @@ const Login = () => {
         }
     };
 
+    const isValid = Object.keys(errors).length === 0;
+
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
@@ -71,7 +73,9 @@ const Login = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
-            <button type="submit">Подтвердить</button>
+            <button type="submit" disabled={!isValid}>
+                Подтвердить
+            </button>
         </form>
     );
 };
