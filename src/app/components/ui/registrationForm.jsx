@@ -5,12 +5,14 @@ import api from "../../api";
 
 import TextField from "../common/form/textField";
 import SelectField from "../common/form/selectField";
+import RadioField from "../common/form/radioField";
 
 const RegistrationForm = () => {
     const [data, setData] = useState({
         email: "",
         password: "",
-        profession: ""
+        profession: "",
+        sex: "male"
     });
     const [errors, setErrors] = useState({});
     const [professions, setProfessions] = useState();
@@ -91,11 +93,22 @@ const RegistrationForm = () => {
             />
             <SelectField
                 label="Выберите вашу профессию"
+                name="profession"
                 defaultOption="Выберите..."
                 options={professions}
                 onChange={handleChange}
                 value={data.profession}
                 error={errors.profession}
+            />
+            <RadioField
+                label="Выберите пол"
+                options={[
+                    { name: "Мужчина", value: "male" },
+                    { name: "Женщина", value: "female" }
+                ]}
+                value={data.sex}
+                name="sex"
+                onChange={handleChange}
             />
             <button
                 type="submit"
