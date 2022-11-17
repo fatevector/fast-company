@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SearchField = ({ value, onChange }) => {
+const SearchField = ({ value, onChange, placeholder }) => {
     return (
         <input
             type="text"
-            placeholder="Search..."
+            placeholder={placeholder}
             value={value}
             onChange={onChange}
         />
@@ -13,12 +13,14 @@ const SearchField = ({ value, onChange }) => {
 };
 
 SearchField.defaultProps = {
-    value: ""
+    value: "",
+    placeholder: "Поиск..."
 };
 
 SearchField.propTypes = {
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string.isRequired,
+    placeholder: PropTypes.string
 };
 
 export default SearchField;

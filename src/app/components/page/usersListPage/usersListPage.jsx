@@ -113,6 +113,7 @@ const UsersListPage = () => {
                     <SearchField
                         value={searchRequest}
                         onChange={handleSearchChange}
+                        placeholder="Поиск..."
                     />
                     {count > 0 && (
                         <UsersTable
