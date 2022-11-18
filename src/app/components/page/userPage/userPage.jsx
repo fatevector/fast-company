@@ -20,8 +20,8 @@ const UserPage = ({ id }) => {
             <Qualities qualities={user.qualities} />
             <p>completedMeetings: {user.completedMeetings}</p>
             <h2>Rate: {user.rate}</h2>
-            <Link to="/users">
-                <button>Все пользователи</button>
+            <Link to={`/users/${id}/edit`}>
+                <button className="btn btn-primary">Изменить</button>
             </Link>
         </>
     ) : (
