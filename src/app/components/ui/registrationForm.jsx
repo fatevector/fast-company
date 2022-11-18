@@ -6,22 +6,26 @@ import api from "../../api";
 import TextField from "../common/form/textField";
 import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
+import MultiSelectField from "../common/form/multiSelectField";
 
 const RegistrationForm = () => {
     const [data, setData] = useState({
         email: "",
         password: "",
         profession: "",
-        sex: "male"
+        sex: "male",
+        qualities: []
     });
+    const [qualities, setQualities] = useState();
     const [errors, setErrors] = useState({});
-    const [professions, setProfessions] = useState();
+    const [professions, setProfessions] = useState([]);
 
     useEffect(() => {
         api.professions.fetchAll().then(data => setProfessions(data));
+        api.qualities.fetchAll().then(data => setQualities(data));
     }, []);
 
-    const handleChange = ({ target }) => {
+    const handleChange = target => {
         setData(prevState => ({
             ...prevState,
             [target.name]: target.value
@@ -101,13 +105,18 @@ const RegistrationForm = () => {
                 error={errors.profession}
             />
             <RadioField
-                label="Выберите пол"
                 options={[
                     { name: "Мужчина", value: "male" },
                     { name: "Женщина", value: "female" }
                 ]}
                 value={data.sex}
                 name="sex"
+                onChange={handleChange}
+            />
+            <MultiSelectField
+                name="qualities"
+                label="Выберите ваши качества"
+                options={qualities}
                 onChange={handleChange}
             />
             <button

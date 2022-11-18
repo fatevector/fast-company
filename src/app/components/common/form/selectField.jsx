@@ -14,30 +14,36 @@ const SelectField = ({
         typeof options === "object"
             ? Object.keys(options).map(optionName => ({
                   name: options[optionName].name,
-                  _id: options[optionName]._id
+                  value: options[optionName]._id
               }))
             : options;
 
     const getSelectClasses = () => "form-select" + (error ? " is-invalid" : "");
 
+    const handleChange = ({ target }) => {
+        onChange({ name: [target.name], value: target.value });
+    };
+
     return (
         <div className="mb-4">
-            <label htmlFor={name} className="form-label">
-                {label}
-            </label>
+            {label && (
+                <label htmlFor={name} className="form-label">
+                    {label}
+                </label>
+            )}
             <select
                 className={getSelectClasses()}
                 id={name}
                 name={name}
                 value={value}
-                onChange={onChange}
+                onChange={handleChange}
             >
                 <option disabled value="">
                     {defaultOption}
                 </option>
                 {optionsArray &&
                     optionsArray.map(option => (
-                        <option value={option._id} key={option._id}>
+                        <option value={option.value} key={option.value}>
                             {option.name}
                         </option>
                     ))}
