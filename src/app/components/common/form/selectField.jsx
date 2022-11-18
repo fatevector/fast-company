@@ -11,11 +11,8 @@ const SelectField = ({
     error
 }) => {
     const optionsArray =
-        typeof options === "object"
-            ? Object.keys(options).map(optionName => ({
-                  name: options[optionName].name,
-                  value: options[optionName]._id
-              }))
+        !Array.isArray(options) && typeof options === "object"
+            ? Object.values(options)
             : options;
 
     const getSelectClasses = () => "form-select" + (error ? " is-invalid" : "");
@@ -41,10 +38,10 @@ const SelectField = ({
                 <option disabled value="">
                     {defaultOption}
                 </option>
-                {optionsArray &&
+                {optionsArray.length > 0 &&
                     optionsArray.map(option => (
                         <option value={option.value} key={option.value}>
-                            {option.name}
+                            {option.label}
                         </option>
                     ))}
             </select>
