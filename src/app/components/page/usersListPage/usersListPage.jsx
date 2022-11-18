@@ -53,7 +53,12 @@ const UsersListPage = () => {
         if (searchRequest !== undefined) {
             setCurrentPage(1);
             setSelectedProf(undefined);
-            setFilter({ rule: user => user.name.includes(searchRequest) });
+            setFilter({
+                rule: user =>
+                    user.name
+                        .toLowerCase()
+                        .includes(searchRequest.toLowerCase())
+            });
         }
     }, [searchRequest]);
 
@@ -111,6 +116,7 @@ const UsersListPage = () => {
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
                     <SearchField
+                        name="searchRequest"
                         value={searchRequest}
                         onChange={handleSearchChange}
                         placeholder="Поиск..."
