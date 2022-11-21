@@ -11,13 +11,21 @@ module.exports = {
     },
     plugins: ["react"],
     rules: {
-        indent: ["error", 4, { SwitchCase: 1 }],
+        indent: [
+            "error",
+            4,
+            {
+                SwitchCase: 1,
+                ignoredNodes: ["ObjectExpression"]
+            }
+        ],
         semi: [2, "always"],
         "space-before-function-paren": [
             "error",
             { anonymous: "always", named: "never" }
         ],
         quotes: ["error", "double", { allowTemplateLiterals: true }],
-        "multiline-ternary": "off"
+        "multiline-ternary": "off",
+        "react/display-name": "off"
     }
 };
