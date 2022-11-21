@@ -25,6 +25,7 @@ module.exports = {
             { anonymous: "always", named: "never" }
         ],
         quotes: ["error", "double", { allowTemplateLiterals: true }],
-        "multiline-ternary": "off"
+        "multiline-ternary": "off",
+        "react/display-name": "off"
     }
 };
