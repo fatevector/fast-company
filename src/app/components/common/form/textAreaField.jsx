@@ -7,6 +7,7 @@ const TextAreaField = ({
     value,
     onChange,
     error,
+    rows,
     placeholder
 }) => {
     const getInputClasses = () => "form-control" + (error ? " is-invalid" : "");
@@ -25,6 +26,7 @@ const TextAreaField = ({
                     value={value}
                     onChange={handleChange}
                     className={getInputClasses()}
+                    rows={rows}
                     placeholder={placeholder}
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
@@ -42,6 +44,7 @@ TextAreaField.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     error: PropTypes.string,
     placeholder: PropTypes.string
 };

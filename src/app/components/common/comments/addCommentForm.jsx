@@ -80,6 +80,7 @@ const AddCommentForm = ({ onSubmit }) => {
                     name="content"
                     value={data.content}
                     label="Комментарий"
+                    rows={3}
                     error={errors.content}
                 />
                 <div className="d-flex justify-content-end">
