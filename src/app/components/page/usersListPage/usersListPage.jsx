@@ -3,6 +3,7 @@ import { orderBy } from "lodash";
 
 import api from "../../../api";
 import paginate from "../../../utils/paginate";
+import { useUser } from "../../../hooks/useUsers";
 
 import Pagination from "../../common/pagination";
 import GroupList from "../../common/groupList";
@@ -17,22 +18,21 @@ const UsersListPage = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [searchRequest, setSearchRequest] = useState(undefined);
-    const [users, setUsers] = useState();
     const [filter, setFilter] = useState();
 
-    useEffect(() => {
-        api.users.fetchAll().then(data => setUsers(data));
-    }, []);
+    const { users } = useUser();
+    console.log(users);
 
     const handleDeleteUser = id => {
-        setUsers(users.filter(user => user._id !== id));
+        // setUsers(users.filter(user => user._id !== id));
+        console.log(id);
     };
     const handleToggleBookmark = id => {
-        setUsers(
-            users.map(user =>
-                user._id === id ? { ...user, bookmark: !user.bookmark } : user
-            )
+        const newArray = users.map(user =>
+            user._id === id ? { ...user, bookmark: !user.bookmark } : user
         );
+        // setUsers(newArray);
+        console.log(newArray);
     };
 
     useEffect(() => {
