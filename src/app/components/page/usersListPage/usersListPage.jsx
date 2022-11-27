@@ -21,7 +21,6 @@ const UsersListPage = () => {
     const [filter, setFilter] = useState();
 
     const { users } = useUser();
-    console.log(users);
 
     const handleDeleteUser = id => {
         // setUsers(users.filter(user => user._id !== id));
