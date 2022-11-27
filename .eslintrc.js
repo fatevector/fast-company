@@ -16,7 +16,7 @@ module.exports = {
             4,
             {
                 SwitchCase: 1,
-                ignoredNodes: ["ObjectExpression"]
+                ignoredNodes: ["ObjectExpression", "ArrowFunctionExpression"]
             }
         ],
         semi: [2, "always"],
