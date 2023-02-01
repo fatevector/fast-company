@@ -13,7 +13,7 @@ const Bookmark = ({ status, onToggleBookmark }) => {
 };
 
 Bookmark.propTypes = {
-    status: PropTypes.bool.isRequired,
+    status: PropTypes.bool,
     onToggleBookmark: PropTypes.func.isRequired
 };
 
