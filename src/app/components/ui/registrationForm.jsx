@@ -21,7 +21,7 @@ const RegistrationForm = () => {
         licence: false
     });
 
-    const { signUp } = useAuth;
+    const { signUp } = useAuth();
 
     const { qualities } = useQuality();
     const qualitiesList = Object.keys(qualities).map(optionName => ({
