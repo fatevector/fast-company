@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import { validator } from "../../utils/validator";
 import { useQuality } from "../../hooks/useQuality";
@@ -12,6 +13,8 @@ import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
 
 const RegistrationForm = () => {
+    const history = useHistory();
+
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -100,6 +103,7 @@ const RegistrationForm = () => {
         };
         try {
             await signUp(newData);
+            history.push("/");
         } catch (error) {
             setErrors(error);
         }

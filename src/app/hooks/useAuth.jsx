@@ -40,7 +40,6 @@ const AuthProvider = ({ children }) => {
                 email,
                 ...rest
             });
-            console.log(data);
         } catch (error) {
             const { code, message } = error.response.data.error;
             console.log(code, message);
