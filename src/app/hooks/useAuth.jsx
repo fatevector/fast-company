@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { toast } from "react-toastify";
 import userService from "../services/user.service";
+import { setTokens } from "../services/localStorage.service";
 
 const httpAuth = axios.create();
 
@@ -13,19 +14,8 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const TOKEN_KEY = "jwt-token";
-    const REFRESH_KEY = "jwt-refresh-token";
-    const EXPIRES_KEY = "jwt-expires";
-
     const [currentUser, setCurrentUser] = useState({});
     const [error, setError] = useState(null);
-
-    const setTokens = ({ refreshToken, idToken, expiresIn = 3600 }) => {
-        const expiresDate = new Date().getTime() + expiresIn * 1000;
-        localStorage.setItem(TOKEN_KEY, idToken);
-        localStorage.setItem(REFRESH_KEY, refreshToken);
-        localStorage.setItem(EXPIRES_KEY, expiresDate);
-    };
 
     const createUser = async data => {
         try {
