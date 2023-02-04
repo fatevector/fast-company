@@ -8,7 +8,7 @@ import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
 
 const LoginForm = () => {
-    const { signIn } = useAuth();
+    const { logIn } = useAuth();
     const history = useHistory();
     const [data, setData] = useState({
         email: "",
@@ -65,7 +65,7 @@ const LoginForm = () => {
         const isValid = validate();
         if (!isValid) return;
         try {
-            await signIn(data);
+            await logIn(data);
             history.push("/");
         } catch (error) {
             setErrors(error);

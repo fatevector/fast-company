@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { toast } from "react-toastify";
 import userService from "../services/user.service";
-import { setTokens } from "../services/localStorage.service";
+import { getAccessToken, setTokens } from "../services/localStorage.service";
 
 const httpAuth = axios.create();
 
@@ -14,13 +14,23 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setUser] = useState({});
     const [error, setError] = useState(null);
 
     const createUser = async data => {
         try {
-            const { content } = userService.create(data);
-            setCurrentUser(content);
+            const { content } = await userService.create(data);
+            console.log(content);
+            setUser(content);
+        } catch (error) {
+            errorCatcher(error);
+        }
+    };
+
+    const getUserData = async () => {
+        try {
+            const { content } = await userService.getCurrentUser();
+            setUser(content);
         } catch (error) {
             errorCatcher(error);
         }
@@ -61,7 +71,7 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const signIn = async ({ email, password }) => {
+    const logIn = async ({ email, password }) => {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
             const { data } = await httpAuth.post(url, {
@@ -70,6 +80,7 @@ const AuthProvider = ({ children }) => {
                 returnSecureToken: true
             });
             setTokens(data);
+            getUserData();
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
@@ -97,6 +108,12 @@ const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        if (getAccessToken()) {
+            getUserData();
+        }
+    }, []);
+
+    useEffect(() => {
         if (error !== null) {
             toast.error(error);
             setError(null);
@@ -104,7 +121,7 @@ const AuthProvider = ({ children }) => {
     }, [error]);
 
     return (
-        <AuthContext.Provider value={{ signUp, signIn, currentUser }}>
+        <AuthContext.Provider value={{ signUp, logIn, currentUser }}>
             {children}
         </AuthContext.Provider>
     );
