@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { validator } from "../../utils/validator";
 import { useQuality } from "../../hooks/useQuality";
 import { useProfessions } from "../../hooks/useProfession";
+import { useAuth } from "../../hooks/useAuth";
 
 import TextField from "../common/form/textField";
 import SelectField from "../common/form/selectField";
@@ -19,6 +20,8 @@ const RegistrationForm = () => {
         qualities: [],
         licence: false
     });
+
+    const { signUp } = useAuth;
 
     const { qualities } = useQuality();
     const qualitiesList = Object.keys(qualities).map(optionName => ({
@@ -96,6 +99,7 @@ const RegistrationForm = () => {
             qualities: data.qualities.map(q => q.value)
         };
         console.log(newData);
+        signUp(newData);
     };
 
     return (
