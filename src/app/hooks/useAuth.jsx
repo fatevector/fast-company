@@ -26,6 +26,10 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    const randomInt = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+
     const signUp = async ({ email, password, ...rest }) => {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
@@ -38,9 +42,12 @@ const AuthProvider = ({ children }) => {
             await createUser({
                 _id: data.localId,
                 email,
+                rate: randomInt(1, 5),
+                completedMeetings: randomInt(0, 200),
                 ...rest
             });
         } catch (error) {
+            errorCatcher(error);
             const { code, message } = error.response.data.error;
             console.log(code, message);
             if (code === 400) {
@@ -64,6 +71,7 @@ const AuthProvider = ({ children }) => {
             });
             setTokens(data);
         } catch (error) {
+            errorCatcher(error);
             const { code, message } = error.response.data.error;
             console.log(code, message);
             if (code === 400) {
