@@ -8,24 +8,27 @@ import Login from "./layouts/login";
 import Users from "./layouts/users";
 import { ProfessionProvider } from "./hooks/useProfession";
 import { QualityProvider } from "./hooks/useQuality";
+import AuthProvider from "./hooks/useAuth";
 
 const App = () => {
     return (
         <>
-            <NavBar />
-            <ProfessionProvider>
-                <QualityProvider>
-                    <Switch>
-                        <Route exact path="/" component={Main} />
-                        <Route path="/login/:type?" component={Login} />
-                        <Route
-                            path="/users/:userId?/:editingMode?"
-                            component={Users}
-                        />
-                        <Redirect to="/" />
-                    </Switch>
-                </QualityProvider>
-            </ProfessionProvider>
+            <AuthProvider>
+                <NavBar />
+                <ProfessionProvider>
+                    <QualityProvider>
+                        <Switch>
+                            <Route exact path="/" component={Main} />
+                            <Route path="/login/:type?" component={Login} />
+                            <Route
+                                path="/users/:userId?/:editingMode?"
+                                component={Users}
+                            />
+                            <Redirect to="/" />
+                        </Switch>
+                    </QualityProvider>
+                </ProfessionProvider>
+            </AuthProvider>
             <ToastContainer />
         </>
     );
