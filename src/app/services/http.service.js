@@ -6,6 +6,7 @@ import { httpAuth } from "../hooks/useAuth";
 import {
     getRefreshToken,
     getTokenExpiresDate,
+    getAccessToken,
     setTokens
 } from "./localStorage.service";
 
@@ -32,6 +33,10 @@ http.interceptors.request.use(
                     expiresIn: data.expires_in,
                     localId: data.user_id
                 });
+            }
+            const accessToken = getAccessToken();
+            if (accessToken) {
+                config.params = { ...config.params, auth: accessToken };
             }
         }
         return config;
