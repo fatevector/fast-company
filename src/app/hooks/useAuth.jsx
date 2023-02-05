@@ -100,17 +100,15 @@ const AuthProvider = ({ children }) => {
             const { code, message } = error.response.data.error;
             console.log(code, message);
             if (code === 400) {
-                if (message === "INVALID_PASSWORD") {
-                    const errorObject = {
-                        password: "Неверный пароль"
-                    };
-                    throw errorObject;
-                }
-                if (message === "EMAIL_NOT_FOUND") {
-                    const errorObject = {
-                        email: "Не найден пользователь с данным Email"
-                    };
-                    throw errorObject;
+                if (
+                    message === "INVALID_PASSWORD" ||
+                    message === "EMAIL_NOT_FOUND"
+                ) {
+                    throw new Error("Email или пароль введены некорректно");
+                } else {
+                    throw new Error(
+                        "Слишком много попыток входа. Попробуйте позднее"
+                    );
                 }
             }
         }
