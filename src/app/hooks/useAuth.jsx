@@ -5,7 +5,12 @@ import { toast } from "react-toastify";
 import userService from "../services/user.service";
 import { getAccessToken, setTokens } from "../services/localStorage.service";
 
-const httpAuth = axios.create();
+export const httpAuth = axios.create({
+    baseURL: "https://identitytoolkit.googleapis.com/v1/",
+    params: {
+        key: process.env.REACT_APP_FIREBASE_KEY
+    }
+});
 
 const AuthContext = React.createContext();
 
@@ -20,7 +25,6 @@ const AuthProvider = ({ children }) => {
     const createUser = async data => {
         try {
             const { content } = await userService.create(data);
-            console.log(content);
             setUser(content);
         } catch (error) {
             errorCatcher(error);
@@ -41,9 +45,8 @@ const AuthProvider = ({ children }) => {
     };
 
     const signUp = async ({ email, password, ...rest }) => {
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
-            const { data } = await httpAuth.post(url, {
+            const { data } = await httpAuth.post("accounts:signUp", {
                 email,
                 password,
                 returnSecureToken: true
@@ -72,13 +75,15 @@ const AuthProvider = ({ children }) => {
     };
 
     const logIn = async ({ email, password }) => {
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
-            const { data } = await httpAuth.post(url, {
-                email,
-                password,
-                returnSecureToken: true
-            });
+            const { data } = await httpAuth.post(
+                "accounts:signInWithPassword",
+                {
+                    email,
+                    password,
+                    returnSecureToken: true
+                }
+            );
             setTokens(data);
             getUserData();
         } catch (error) {
