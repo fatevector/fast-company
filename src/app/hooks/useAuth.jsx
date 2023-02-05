@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { toast } from "react-toastify";
 import userService from "../services/user.service";
-import { getAccessToken, setTokens } from "../services/localStorage.service";
+import {
+    getAccessToken,
+    removeAuthData,
+    setTokens
+} from "../services/localStorage.service";
+import { useHistory } from "react-router-dom";
 
 export const httpAuth = axios.create({
     baseURL: "https://identitytoolkit.googleapis.com/v1/",
@@ -22,6 +27,7 @@ const AuthProvider = ({ children }) => {
     const [currentUser, setUser] = useState();
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const history = useHistory();
 
     const createUser = async data => {
         try {
@@ -110,6 +116,12 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    const logOut = () => {
+        removeAuthData();
+        setUser(null);
+        history.push("/");
+    };
+
     const errorCatcher = error => {
         const { message } = error.response.data;
         setError(message);
@@ -131,7 +143,7 @@ const AuthProvider = ({ children }) => {
     }, [error]);
 
     return (
-        <AuthContext.Provider value={{ signUp, logIn, currentUser }}>
+        <AuthContext.Provider value={{ signUp, logIn, logOut, currentUser }}>
             {!isLoading ? children : "Loading..."}
         </AuthContext.Provider>
     );
