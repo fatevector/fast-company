@@ -4,6 +4,7 @@ import { orderBy } from "lodash";
 import paginate from "../../../utils/paginate";
 import { useUser } from "../../../hooks/useUsers";
 import { useProfessions } from "../../../hooks/useProfession";
+import { useAuth } from "../../../hooks/useAuth";
 
 import Pagination from "../../common/pagination";
 import GroupList from "../../common/groupList";
@@ -14,6 +15,7 @@ import SearchField from "../../common/form/searchField";
 const UsersListPage = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
+    const { currentUser } = useAuth();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [searchRequest, setSearchRequest] = useState(undefined);
@@ -69,10 +71,15 @@ const UsersListPage = () => {
         setSearchRequest(target.value);
     };
 
-    if (users) {
+    const filterUsers = data => {
         const filteredUsers = filter
-            ? users.filter(user => filter.rule(user))
-            : users;
+            ? data.filter(user => filter.rule(user))
+            : data;
+        return filteredUsers.filter(user => user._id !== currentUser._id);
+    };
+
+    if (users) {
+        const filteredUsers = filterUsers(users);
         const count = filteredUsers.length;
         const sortedUsers = orderBy(
             filteredUsers,

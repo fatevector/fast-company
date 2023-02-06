@@ -42,7 +42,7 @@ const UserProvider = ({ children }) => {
     }, []);
 
     const getUserById = userId => {
-        return users.find(user => (user._id = userId));
+        return users.find(user => user._id === userId);
     };
 
     return (
