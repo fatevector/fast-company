@@ -6,7 +6,7 @@ import AddCommentForm from "../common/comments/addCommentForm";
 import { useComments } from "../../hooks/useComments";
 
 const Comments = () => {
-    const { comments, createComment } = useComments();
+    const { comments, createComment, removeComment } = useComments();
 
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
 
@@ -18,6 +18,7 @@ const Comments = () => {
         //             prevState.filter(comment => comment._id !== id)
         //         )
         //     );
+        removeComment(id);
     };
 
     const handleSubmit = data => {
