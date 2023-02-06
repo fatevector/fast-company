@@ -33,7 +33,7 @@ export const CommentsProvider = ({ children }) => {
 
     useEffect(() => {
         getComments();
-    }, []);
+    }, [userId]);
 
     const getComments = async () => {
         try {
@@ -57,11 +57,10 @@ export const CommentsProvider = ({ children }) => {
         };
         try {
             const { content } = await commentService.createComment(comment);
-            console.log(content);
+            setComments(prevState => [...prevState, content]);
         } catch (error) {
             errorCatcher(error);
         }
-        console.log(comment);
     };
 
     return (
