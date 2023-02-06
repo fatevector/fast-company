@@ -5,10 +5,12 @@ import { orderBy } from "lodash";
 import api from "../../api";
 import CommentsList from "../common/comments";
 import AddCommentForm from "../common/comments/addCommentForm";
+import { useComments } from "../../hooks/useComments";
 
 const Comments = () => {
     const { userId } = useParams();
     const [comments, setComments] = useState([]);
+    const { createComment } = useComments();
 
     useEffect(() => {
         api.comments
@@ -29,9 +31,10 @@ const Comments = () => {
     };
 
     const handleSubmit = data => {
-        api.comments
-            .add({ ...data, pageId: userId })
-            .then(data => setComments([...comments, data]));
+        createComment(data);
+        // api.comments
+        //     .add({ ...data, pageId: userId })
+        //     .then(data => setComments([...comments, data]));
     };
 
     return (
