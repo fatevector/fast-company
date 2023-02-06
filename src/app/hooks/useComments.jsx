@@ -32,9 +32,20 @@ export const CommentsProvider = ({ children }) => {
     }, [error]);
 
     useEffect(() => {
-        setComments(null);
-        setIsLoading(false);
+        getComments();
     }, []);
+
+    const getComments = async () => {
+        try {
+            const { content } = await commentService.getComments(userId);
+            console.log(content);
+            setComments(content);
+        } catch (error) {
+            errorCatcher(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const createComment = async data => {
         const comment = {
