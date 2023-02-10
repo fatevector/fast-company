@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import { validator } from "../../utils/validator";
-import { useProfessions } from "../../hooks/useProfession";
 import { useAuth } from "../../hooks/useAuth";
 
 import TextField from "../common/form/textField";
@@ -12,6 +11,7 @@ import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
 import { useSelector } from "react-redux";
 import { getQualities } from "../../store/qualities";
+import { getProfessions } from "../../store/professions";
 
 const RegistrationForm = () => {
     const history = useHistory();
@@ -35,7 +35,7 @@ const RegistrationForm = () => {
         color: qualities[optionName].color
     }));
 
-    const { professions } = useProfessions();
+    const professions = useSelector(getProfessions());
     const professionsList = Object.keys(professions).map(professionName => ({
         label: professions[professionName].name,
         value: professions[professionName]._id

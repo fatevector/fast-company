@@ -1,9 +1,9 @@
 import { React, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { orderBy } from "lodash";
 
 import paginate from "../../../utils/paginate";
 import { useUser } from "../../../hooks/useUsers";
-import { useProfessions } from "../../../hooks/useProfession";
 import { useAuth } from "../../../hooks/useAuth";
 
 import Pagination from "../../common/pagination";
@@ -11,6 +11,10 @@ import GroupList from "../../common/groupList";
 import SearchStatus from "../../ui/searchStatus";
 import UsersTable from "../../ui/usersTable";
 import SearchField from "../../common/form/searchField";
+import {
+    getProfessions,
+    getProfessionsLoadingStatus
+} from "../../../store/professions";
 
 const UsersListPage = () => {
     const pageSize = 8;
@@ -22,13 +26,13 @@ const UsersListPage = () => {
     const [filter, setFilter] = useState();
 
     const { users } = useUser();
-    const { isLoading: professionsLoading, professions } = useProfessions();
+    const professions = useSelector(getProfessions());
+    const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
     const handleToggleBookmark = id => {
         const newArray = users.map(user =>
             user._id === id ? { ...user, bookmark: !user.bookmark } : user
         );
-        // setUsers(newArray);
         console.log(newArray);
     };
 
