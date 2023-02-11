@@ -5,14 +5,13 @@ import UserEditingPage from "../components/page/userEditingPage.jsx/userEditingP
 import UserPage from "../components/page/userPage";
 import UsersListPage from "../components/page/usersListPage";
 import { useAuth } from "../hooks/useAuth";
-import UserProvider from "../hooks/useUsers";
 
 const Users = () => {
     const { userId, editingMode } = useParams();
     const { currentUser } = useAuth();
 
     return (
-        <UserProvider>
+        <>
             {userId ? (
                 editingMode ? (
                     currentUser._id === userId ? (
@@ -26,7 +25,7 @@ const Users = () => {
             ) : (
                 <UsersListPage />
             )}
-        </UserProvider>
+        </>
     );
 };
 

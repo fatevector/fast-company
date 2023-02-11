@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { orderBy } from "lodash";
 
 import paginate from "../../../utils/paginate";
-import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
+import { getUsers } from "../../../store/users";
 
 import Pagination from "../../common/pagination";
 import GroupList from "../../common/groupList";
@@ -25,7 +25,7 @@ const UsersListPage = () => {
     const [searchRequest, setSearchRequest] = useState(undefined);
     const [filter, setFilter] = useState();
 
-    const { users } = useUser();
+    const users = useSelector(getUsers());
     const professions = useSelector(getProfessions());
     const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
