@@ -3,6 +3,7 @@ import authService from "../services/auth.service";
 import localStorageService from "../services/localStorage.service";
 import userService from "../services/user.service";
 import getRandomInt from "../utils/getRandomInt";
+import history from "../utils/history";
 
 const usersSlice = createSlice({
     name: "users",
@@ -60,6 +61,7 @@ const createUser = data => async dispatch => {
     try {
         const { content } = await userService.create(data);
         dispatch(userCreated(content));
+        history.push("/users");
     } catch (error) {
         dispatch(createUserFailed(error.message));
     }
