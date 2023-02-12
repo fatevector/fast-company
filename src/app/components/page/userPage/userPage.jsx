@@ -15,7 +15,6 @@ const UserPage = ({ id }) => {
         <>
             <div className="container">
                 <div className="row gutters-sm">
-                    {/* Left */}
                     <div className="col-md-4 mb-3">
                         <UserCard user={user} />
                         <QualitiesCard qualities={user.qualities} />
