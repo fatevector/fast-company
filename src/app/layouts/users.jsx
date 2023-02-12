@@ -1,40 +1,34 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, useParams } from "react-router-dom";
 import UserEditingPage from "../components/page/userEditingPage.jsx/userEditingPage";
 
 import UserPage from "../components/page/userPage";
 import UsersListPage from "../components/page/usersListPage";
-import { useAuth } from "../hooks/useAuth";
-import { getDataStatus, loadUsersList } from "../store/users";
+import UsersLoader from "../components/ui/hoc/usersLoader";
+import { getCurrentUserId } from "../store/users";
 
 const Users = () => {
     const { userId, editingMode } = useParams();
-    const { currentUser } = useAuth();
-    const dataStatus = useSelector(getDataStatus());
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (!dataStatus) dispatch(loadUsersList());
-    }, []);
-
-    if (!dataStatus) return "Loading...";
+    const currentUserId = useSelector(getCurrentUserId());
 
     return (
         <>
-            {userId ? (
-                editingMode ? (
-                    currentUser._id === userId ? (
-                        <UserEditingPage id={userId} />
+            <UsersLoader>
+                {userId ? (
+                    editingMode ? (
+                        currentUserId === userId ? (
+                            <UserEditingPage id={userId} />
+                        ) : (
+                            <Redirect to={`/users/${currentUserId}/edit`} />
+                        )
                     ) : (
-                        <Redirect to={`/users/${currentUser._id}/edit`} />
+                        <UserPage id={userId} />
                     )
                 ) : (
-                    <UserPage id={userId} />
-                )
-            ) : (
-                <UsersListPage />
-            )}
+                    <UsersListPage />
+                )}
+            </UsersLoader>
         </>
     );
 };
