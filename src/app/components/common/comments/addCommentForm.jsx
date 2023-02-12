@@ -1,35 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import api from "../../../api";
 import { validator } from "../../../utils/validator";
 
-import SelectField from "../form/selectField";
 import TextAreaField from "../form/textAreaField";
 
 const AddCommentForm = ({ onSubmit }) => {
-    const initData = { userId: "", content: "" };
-
-    const [data, setData] = useState(initData);
-    const [users, setUsers] = useState([]);
+    const [data, setData] = useState({});
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        api.users.fetchAll().then(data => {
-            const usersList = Object.keys(data).map(optionName => ({
-                label: data[optionName].name,
-                value: data[optionName]._id
-            }));
-            setUsers(usersList);
-        });
-    }, []);
-
     const validatorConfig = {
-        userId: {
-            isRequired: {
-                message: "Обязательно выберете, от кого будет сообщение"
-            }
-        },
         content: {
             isRequired: {
                 message: "Сообщение не может быть пустым"
@@ -51,7 +31,7 @@ const AddCommentForm = ({ onSubmit }) => {
     };
 
     const clearForm = () => {
-        setData(initData);
+        setData({});
         setErrors({});
     };
 
@@ -67,18 +47,10 @@ const AddCommentForm = ({ onSubmit }) => {
         <div>
             <h2>New comment</h2>
             <form onSubmit={handleSubmit}>
-                <SelectField
-                    onChange={handleChange}
-                    options={users}
-                    name="userId"
-                    value={data.userId}
-                    defaultOption="Выберите пользователя"
-                    error={errors.userId}
-                />
                 <TextAreaField
                     onChange={handleChange}
                     name="content"
-                    value={data.content}
+                    value={data.content || ""}
                     label="Комментарий"
                     rows={3}
                     error={errors.content}
