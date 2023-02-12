@@ -146,4 +146,12 @@ export const getCurrentUserId = () => state => state.users.auth.userId;
 
 export const getUsersLoadingStatus = () => state => state.users.isLoading;
 
+export const getCurrentUserData = () => state => {
+    if (state.users.entities) {
+        return state.users.entities.find(
+            user => user._id === state.users.auth.userId
+        );
+    }
+};
+
 export default usersReducer;
