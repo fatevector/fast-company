@@ -3,14 +3,16 @@ import { orderBy } from "lodash";
 
 import CommentsList from "../common/comments";
 import AddCommentForm from "../common/comments/addCommentForm";
-import { useComments } from "../../hooks/useComments";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    createComment,
     getComments,
     getCommentsLoadingStatus,
-    loadCommentsList
+    loadCommentsList,
+    removeComment
 } from "../../store/comments";
 import { useParams } from "react-router-dom";
+import { getCurrentUserId } from "../../store/users";
 
 const Comments = () => {
     const { userId } = useParams();
@@ -19,17 +21,19 @@ const Comments = () => {
         dispatch(loadCommentsList(userId));
     }, [userId]);
     const isLoading = useSelector(getCommentsLoadingStatus());
-    const { createComment, removeComment } = useComments();
     const comments = useSelector(getComments());
+    const currentUserId = useSelector(getCurrentUserId());
 
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
 
     const handleRemoveComment = id => {
-        removeComment(id);
+        dispatch(removeComment(id));
     };
 
     const handleSubmit = data => {
-        createComment(data);
+        dispatch(
+            createComment({ pageId: userId, userId: currentUserId, data })
+        );
     };
 
     return (
