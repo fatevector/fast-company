@@ -2,28 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import { validator } from "../../utils/validator";
-import { useAuth } from "../../hooks/useAuth";
 
 import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthErrors, logIn } from "../../store/users";
 
 const LoginForm = () => {
-    const { logIn } = useAuth();
+    const dispatch = useDispatch();
     const history = useHistory();
     const [data, setData] = useState({
         email: "",
         password: "",
         stayOn: false
     });
+    const loginError = useSelector(getAuthErrors());
     const [errors, setErrors] = useState({});
-    const [enterError, setEnterError] = useState(null);
 
     const handleChange = target => {
         setData(prevState => ({
             ...prevState,
             [target.name]: target.value
         }));
-        setEnterError(null);
     };
 
     const validatorConfig = {
@@ -49,20 +49,14 @@ const LoginForm = () => {
         validate();
     }, [data]);
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        try {
-            await logIn(data);
-            history.push(
-                history.location.state
-                    ? history.location.state.from.pathname
-                    : "/"
-            );
-        } catch (error) {
-            setEnterError(error.message);
-        }
+        const redirect = history.location.state
+            ? history.location.state.from.pathname
+            : "/";
+        dispatch(logIn({ payload: data, redirect }));
     };
 
     return (
@@ -89,10 +83,10 @@ const LoginForm = () => {
             >
                 Оставаться в системе
             </CheckBoxField>
-            {enterError && <p className="text-danger">{enterError}</p>}
+            {loginError && <p className="text-danger">{loginError}</p>}
             <button
                 type="submit"
-                disabled={!isValid || enterError}
+                disabled={!isValid}
                 className="btn btn-primary w-100 mx-auto"
             >
                 Подтвердить

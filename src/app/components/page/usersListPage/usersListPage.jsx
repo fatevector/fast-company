@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import { orderBy } from "lodash";
 
 import paginate from "../../../utils/paginate";
-import { useUser } from "../../../hooks/useUsers";
-import { useAuth } from "../../../hooks/useAuth";
+import { getCurrentUserId, getUsers } from "../../../store/users";
 
 import Pagination from "../../common/pagination";
 import GroupList from "../../common/groupList";
@@ -19,13 +18,13 @@ import {
 const UsersListPage = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
-    const { currentUser } = useAuth();
+    const currentUserId = useSelector(getCurrentUserId());
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [searchRequest, setSearchRequest] = useState(undefined);
     const [filter, setFilter] = useState();
 
-    const { users } = useUser();
+    const users = useSelector(getUsers());
     const professions = useSelector(getProfessions());
     const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
@@ -79,7 +78,7 @@ const UsersListPage = () => {
         const filteredUsers = filter
             ? data.filter(user => filter.rule(user))
             : data;
-        return filteredUsers.filter(user => user._id !== currentUser._id);
+        return filteredUsers.filter(user => user._id !== currentUserId);
     };
 
     if (users) {
