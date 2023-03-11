@@ -16,13 +16,15 @@ const http = axios.create({
 
 http.interceptors.request.use(
     async function (config) {
+        const expiresDate = getTokenExpiresDate();
+        const refreshToken = getRefreshToken();
+        const isExpired = refreshToken && expiresDate < Date.now();
+
         if (configFile.isFirebase) {
             const containSlash = /\/$/gi.test(config.url);
             config.url =
                 (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
-            const expiresDate = getTokenExpiresDate();
-            const refreshToken = getRefreshToken();
-            if (refreshToken && expiresDate < Date.now()) {
+            if (isExpired) {
                 const data = await authService.refresh();
                 setTokens({
                     refreshToken: data.refresh_token,
@@ -34,6 +36,18 @@ http.interceptors.request.use(
             const accessToken = getAccessToken();
             if (accessToken) {
                 config.params = { ...config.params, auth: accessToken };
+            }
+        } else {
+            if (isExpired) {
+                const data = await authService.refresh();
+                setTokens(data);
+            }
+            const accessToken = getAccessToken();
+            if (accessToken) {
+                config.headers = {
+                    ...config.headers,
+                    Authorization: `Bearer ${accessToken}`
+                };
             }
         }
         return config;
@@ -55,6 +69,8 @@ http.interceptors.response.use(
     res => {
         if (configFile.isFirebase) {
             res.data = { content: transformData(res.data) };
+        } else {
+            res.data = { content: res.data };
         }
         return res;
     },
@@ -75,7 +91,7 @@ http.interceptors.response.use(
 const httpService = {
     get: http.get,
     post: http.post,
-    put: http.put,
+    patch: http.patch,
     delete: http.delete
 };
 

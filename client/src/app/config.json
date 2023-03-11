@@ -1,4 +1,4 @@
 {
-    "API_BASE_URL": "https://fast-company-firebase-1f779-default-rtdb.europe-west1.firebasedatabase.app/",
-    "isFirebase": true
+    "API_BASE_URL": "http://localhost:8080/api/",
+    "isFirebase": false
 }

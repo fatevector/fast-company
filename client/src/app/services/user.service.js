@@ -9,14 +9,14 @@ const userService = {
         return data;
     },
     create: async payload => {
-        const { data } = await httpService.put(
+        const { data } = await httpService.patch(
             userEndpoint + payload._id,
             payload
         );
         return data;
     },
     update: async payload => {
-        const { data } = await httpService.put(
+        const { data } = await httpService.patch(
             userEndpoint + payload._id,
             payload
         );

@@ -32,7 +32,7 @@ const Comments = () => {
 
     const handleSubmit = data => {
         dispatch(
-            createComment({ pageId: userId, userId: currentUserId, data })
+            createComment({ ...data, pageId: userId, userId: currentUserId })
         );
     };
 

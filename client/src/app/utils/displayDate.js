@@ -3,7 +3,7 @@ const getZeroPaddedString = num => {
 };
 
 const displayDate = data => {
-    const date = new Date(Number(data));
+    const date = new Date(data);
     const now = new Date();
     const yearsDif = now.getFullYear() - date.getFullYear();
     if (yearsDif !== 0) {
